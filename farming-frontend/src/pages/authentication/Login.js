@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 const Login = () => {
   const [formData, setFormData] = useState({ username: '', password: '' });
   const navigate = useNavigate();
+  const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000/api';
 
   const handleChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -14,13 +15,13 @@ const Login = () => {
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://127.0.0.1:8000/api/login/', formData);
+      const res = await axios.post(`${API_BASE_URL}/login/`, formData);
   
       // 🔍 This will show you the full response from the backend
       console.log("Login API Response:", res.data);
   
       // ✅ Save the token from response — change `access` to `token` if needed
-      localStorage.setItem('token', res.data.tokens.access); // ✅ 'tokens.access' not just 'token'
+      localStorage.setItem('token', res.data.tokens.access); // save JWT access token
 
   
       // ✅ Navigate to dashboard

@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 const Signup = () => {
   const [formData, setFormData] = useState({ username: '', password: '' });
   const navigate = useNavigate();
+  const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000/api';
 
   const handleChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -14,8 +15,9 @@ const Signup = () => {
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://127.0.0.1:8000/api/signup/', formData);
-      localStorage.setItem('token', res.data.token);
+      const res = await axios.post(`${API_BASE_URL}/signup/`, formData);
+      // Store JWT access token returned by backend
+      localStorage.setItem('token', res.data.tokens?.access);
       navigate('/dashboard');
     } catch (err) {
       alert('Signup failed. Try again.');
