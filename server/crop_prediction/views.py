@@ -5,10 +5,15 @@ from rest_framework.decorators import api_view
 from .serializers import CropPredictionInputSerializer
 import joblib
 import numpy as np
+import os
+from pathlib import Path
 
-# Load the model and encoder
-model = joblib.load(r'C:\Users\Suman\sustainable-farming-hub\server\ml\crop_predictor_model.pkl')
-encoder = joblib.load(r'C:\Users\Suman\sustainable-farming-hub\server\ml\crop_encoder.pkl')
+# Get the base directory
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Load the model and encoder using relative paths
+model = joblib.load(os.path.join(BASE_DIR, 'ml', 'crop_predictor_model.pkl'))
+encoder = joblib.load(os.path.join(BASE_DIR, 'ml', 'crop_encoder.pkl'))
 
 @api_view(['POST'])
 def predict_crop(request):
