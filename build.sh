@@ -1,15 +1,10 @@
 #!/bin/bash
 set -o errexit
 
-# Build frontend
-cd farming-frontend
-npm install
-npm run build
-cd ..
-
-# Run Django migrations
+# Install dependencies
 cd server
 pip install -r requirements.txt
-python manage.py collectstatic --noinput
-python manage.py migrate
-cd ..
+
+# Run Django migrations and collect static files
+python manage.py collectstatic --noinput --clear
+python manage.py migrate --noinput
